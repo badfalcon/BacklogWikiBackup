@@ -8,7 +8,7 @@ API_KEY = 'YOUR_API_KEY'
 SPACE_ID = 'YOUR_SPACE_ID'
 PROJECT_ID = 'YOUR_PROJECT_ID'
 SPACE_EXTENSION = 'YOUR_SPACE_EXTENSION'
-BASE_URL = f'https://{SPACE_ID}.{SPACE_EXTENSION}.backlog.jp/api/v2'
+BASE_URL = f'https://{SPACE_ID}.backlog..{SPACE_EXTENSION}/api/v2'
 
 def get_wiki_page_list():
     url = f'{BASE_URL}/wikis'
