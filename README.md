@@ -18,12 +18,14 @@ pip install requests
 
 ## 設定
 
-`main.py`ファイル内の以下の変数を設定してください。
+`sample.env`ファイルを元に`.env`ファイルを作成し、以下のように設定してください。
 
-- `API_KEY`: BacklogのAPIキー
-- `SPACE_ID`: BacklogのスペースID
-- `PROJECT_ID`: バックアップしたいプロジェクトのID
-- `SPACE_EXTENSION`: スペースのドメイン拡張子（例: `com`, `jp`）
+```dotenv
+API_KEY=your_api_key
+SPACE_ID=your_space_id
+PROJECT_ID=your_project_id
+SPACE_EXTENSION=your_space_extension
+```
 
 ## 使用方法
 
@@ -46,7 +48,6 @@ python main.py
 ## 注意事項
 
 - APIキーやプロジェクトIDなどの機密情報は、公開しないように注意してください。
-- レート制限に注意し、必要に応じて待機時間を調整してください。
 
 ## ライセンス
 
