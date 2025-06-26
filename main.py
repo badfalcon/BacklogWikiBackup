@@ -53,10 +53,45 @@ def get_wiki_attachments(page_id):
     response.raise_for_status()
     return response.json()
 
+def backlog_to_markdown(text):
+    if text is None:
+        return ""
+    # Headers
+    text = re.sub(r'^\*\*\*\s*(.*)', r'### \1', text, flags=re.MULTILINE)
+    text = re.sub(r'^\*\*\s*(.*)', r'## \1', text, flags=re.MULTILINE)
+    text = re.sub(r'^\*\s*(.*)', r'# \1', text, flags=re.MULTILINE)
+
+    # Bold
+    text = re.sub(r"''([^']+)''", r'**\1**', text)
+
+    # Italic
+    text = re.sub(r"'''([^']+)'''", r'*\1*', text)
+
+    # Strikethrough
+    text = re.sub(r'%%(.*?)%%', r'~~\1~~', text)
+
+    # Unordered lists
+    text = re.sub(r'^\s*\s*\-\s*(.*)', r'    * \1', text, flags=re.MULTILINE)
+    text = re.sub(r'^\s*\-\s*(.*)', r'  * \1', text, flags=re.MULTILINE)
+    text = re.sub(r'^\-\s*(.*)', r'* \1', text, flags=re.MULTILINE)
+
+    # Ordered lists
+    text = re.sub(r'^\s*\s*\+\s*(.*)', r'      1. \1', text, flags=re.MULTILINE)
+    text = re.sub(r'^\s*\+\s*(.*)', r'   1. \1', text, flags=re.MULTILINE)
+    text = re.sub(r'^\+\s*(.*)', r'1. \1', text, flags=re.MULTILINE)
+
+    # Links
+    text = re.sub(r'\[\[(.*?)\|(.*?)', r'[\1](\2.md)', text)
+    text = re.sub(r'\[\[(.*?)\]\]', r'[\1](\1.md)', text)
+
+    return text
+
 def save_wiki_page(page_content, page_folder):
     safe_name = re.sub(r'[\\/*?:"<>|]', '_', page_content['name'])
+    # Convert Backlog to Markdown
+    markdown_content = backlog_to_markdown(page_content['content'])
     with open(f"{page_folder}/{safe_name}.md", 'w', encoding='utf-8') as file:
-        file.write(page_content['content'])
+        file.write(markdown_content)
 
 def save_attachments(page_id, attachments, page_folder):
     for attachment in attachments:
